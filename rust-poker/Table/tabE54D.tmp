@@ -1,0 +1,30 @@
+[gd_scene load_steps=4 format=3 uid="uid://bd1jlgtvtsueo"]
+
+[ext_resource type="Texture2D" uid="uid://6plitao0lpei" path="res://Graphics/proto table.png" id="1_7mjgk"]
+[ext_resource type="Script" path="res://Table/table.gd" id="1_nqsxy"]
+[ext_resource type="PackedScene" uid="uid://dtki1dwyh8v2p" path="res://Card/card.tscn" id="2_c0dqb"]
+
+[node name="Table" type="Node2D"]
+script = ExtResource("1_nqsxy")
+
+[node name="Table" type="Sprite2D" parent="."]
+texture = ExtResource("1_7mjgk")
+centered = false
+metadata/_edit_lock_ = true
+
+[node name="HoleButton" type="Button" parent="."]
+offset_left = 664.0
+offset_top = 961.0
+offset_right = 857.0
+offset_bottom = 1044.0
+text = "Hole Cards"
+
+[node name="HoleCard1" parent="." instance=ExtResource("2_c0dqb")]
+position = Vector2(910, 824)
+scale = Vector2(1.42435, 1.42435)
+
+[node name="HoleCard2" parent="." instance=ExtResource("2_c0dqb")]
+position = Vector2(1015, 824)
+scale = Vector2(1.42435, 1.42435)
+
+[node name="HTTPRequest" type="HTTPRequest" parent="."]
