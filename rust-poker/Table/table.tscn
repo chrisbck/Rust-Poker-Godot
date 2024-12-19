@@ -13,29 +13,72 @@ centered = false
 metadata/_edit_lock_ = true
 
 [node name="HoleButton" type="Button" parent="."]
-offset_left = 664.0
+offset_left = 592.0
 offset_top = 961.0
-offset_right = 857.0
+offset_right = 785.0
 offset_bottom = 1044.0
 text = "Hole Cards"
 
+[node name="CommunityButton" type="Button" parent="."]
+offset_left = 792.0
+offset_top = 960.0
+offset_right = 985.0
+offset_bottom = 1043.0
+text = "Community Cards"
+
 [node name="ResetButton" type="Button" parent="."]
-offset_left = 878.0
-offset_top = 961.0
-offset_right = 1071.0
-offset_bottom = 1044.0
+offset_left = 1464.0
+offset_top = 960.0
+offset_right = 1657.0
+offset_bottom = 1043.0
 text = "Reset Deck"
 
-[node name="HoleCard1" parent="." instance=ExtResource("2_c0dqb")]
+[node name="CommunityCards" type="Node2D" parent="."]
+
+[node name="Flop1" parent="CommunityCards" instance=ExtResource("2_c0dqb")]
+position = Vector2(736, 496)
+
+[node name="Flop2" parent="CommunityCards" instance=ExtResource("2_c0dqb")]
+position = Vector2(856, 496)
+
+[node name="Flop3" parent="CommunityCards" instance=ExtResource("2_c0dqb")]
+position = Vector2(976, 496)
+
+[node name="Turn" parent="CommunityCards" instance=ExtResource("2_c0dqb")]
+position = Vector2(1096, 496)
+
+[node name="River" parent="CommunityCards" instance=ExtResource("2_c0dqb")]
+position = Vector2(1216, 496)
+
+[node name="HoleCards" type="Node2D" parent="."]
+
+[node name="HoleCard1" parent="HoleCards" instance=ExtResource("2_c0dqb")]
 position = Vector2(910, 824)
 scale = Vector2(1.42435, 1.42435)
 
-[node name="HoleCard2" parent="." instance=ExtResource("2_c0dqb")]
+[node name="HoleCard2" parent="HoleCards" instance=ExtResource("2_c0dqb")]
 position = Vector2(1015, 824)
 scale = Vector2(1.42435, 1.42435)
 
 [node name="HTTPRequest" type="HTTPRequest" parent="."]
 
-[connection signal="pressed" from="HoleButton" to="." method="_on_hole_button_pressed"]
-[connection signal="pressed" from="ResetButton" to="." method="_on_reset_button_pressed"]
-[connection signal="request_completed" from="HTTPRequest" to="." method="_on_http_request_request_completed"]
+[node name="Diagnostics" type="Node2D" parent="."]
+
+[node name="RemainingCards" type="Label" parent="Diagnostics"]
+offset_left = 80.0
+offset_top = 56.0
+offset_right = 120.0
+offset_bottom = 79.0
+text = "Remaining Cards: "
+
+[node name="EvaluationLabel" type="Label" parent="Diagnostics"]
+offset_left = 784.0
+offset_top = 656.0
+offset_right = 824.0
+offset_bottom = 679.0
+text = "Best Hand: "
+
+[connection signal="pressed" from="HoleButton" to="." method="_on_HoleButton_pressed"]
+[connection signal="pressed" from="CommunityButton" to="." method="_on_CommunityButton_pressed"]
+[connection signal="pressed" from="ResetButton" to="." method="_on_ResetButton_pressed"]
+[connection signal="request_completed" from="HTTPRequest" to="." method="_on_HTTPRequest_request_completed"]

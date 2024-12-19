@@ -219,6 +219,7 @@ animations = [{
 }]
 
 [node name="Card" type="Node2D"]
+scale = Vector2(1.56822, 1.56822)
 script = ExtResource("1_r5w46")
 
 [node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
