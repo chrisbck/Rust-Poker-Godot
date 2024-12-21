@@ -54,8 +54,8 @@ func _on_HTTPRequest_request_completed(result, response_code, headers, body):
 				print("Community cards received: ", cards)
 				update_community_cards(cards)  # Update community cards
 			elif request_type == "evaluation":
-				var best_hand = data.get("best_hand", null)
-				print("Evaluation recieved")
+				var best_hand = data.get("rank", null)
+				print("Evaluation received")
 				update_besthand(best_hand)
 			else:
 				print("Unknown request type: ", request_type)
