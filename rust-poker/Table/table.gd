@@ -54,9 +54,12 @@ func _on_HTTPRequest_request_completed(result, response_code, headers, body):
 				print("Community cards received: ", cards)
 				update_community_cards(cards)  # Update community cards
 			elif request_type == "evaluation":
-				var best_hand = data.get("rank", null)
+				var best_hand_label = data.get("rank", null)
+				var best_cards = data.get("cards", null)
+				
 				print("Evaluation received")
-				update_besthand(best_hand)
+				update_besthand_label(best_hand_label)
+				update_besthand_cards(best_cards)
 			else:
 				print("Unknown request type: ", request_type)
 		else:
@@ -84,12 +87,21 @@ func update_community_cards(card_data):
 func update_hole_cards(card_data):
 	var card_sprites = hole_cards.get_children()
 	update_card_sprites(card_sprites, card_data)
-
-func update_besthand(best_hand):
-	evaluation_label.text = "Best hand: " + best_hand
 	
+
+func update_besthand_label(best_hand):
+	evaluation_label.text = "Best hand: " + best_hand
+
+func update_besthand_cards(cards):
+	$Hand.update_hand_from_json(cards)
+	
+func update_remaining_cards(remaining: int) -> void:
+	$Diagnostics/RemainingCards.text = "Remaing Cards: " + str(remaining)
+
 # Resets all card sprites to their default state
 func reset_all_cards():
 	var all_cards = community_cards.get_children() + hole_cards.get_children()
 	for card in all_cards:
-		card.set_card_from_json({"rank":"Two","suit":"Spades"})  # Reset to empty or default state
+		card.show_back()
+	
+	$Hand.reset_hand()

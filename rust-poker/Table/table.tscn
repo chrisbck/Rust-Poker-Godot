@@ -1,8 +1,9 @@
-[gd_scene load_steps=4 format=3 uid="uid://bd1jlgtvtsueo"]
+[gd_scene load_steps=5 format=3 uid="uid://bd1jlgtvtsueo"]
 
 [ext_resource type="Texture2D" uid="uid://6plitao0lpei" path="res://Graphics/proto table.png" id="1_7mjgk"]
 [ext_resource type="Script" path="res://Table/table.gd" id="1_nqsxy"]
 [ext_resource type="PackedScene" uid="uid://dtki1dwyh8v2p" path="res://Card/card.tscn" id="2_c0dqb"]
+[ext_resource type="PackedScene" uid="uid://ckk7atgly4xgt" path="res://Card/Hand/hand.tscn" id="4_lbi7v"]
 
 [node name="Table" type="Node2D"]
 script = ExtResource("1_nqsxy")
@@ -72,11 +73,15 @@ offset_bottom = 79.0
 text = "Remaining Cards: "
 
 [node name="EvaluationLabel" type="Label" parent="Diagnostics"]
-offset_left = 784.0
-offset_top = 656.0
-offset_right = 824.0
-offset_bottom = 679.0
+offset_left = 72.0
+offset_top = 112.0
+offset_right = 161.0
+offset_bottom = 135.0
 text = "Best Hand: "
+
+[node name="Hand" parent="." instance=ExtResource("4_lbi7v")]
+position = Vector2(64, 144)
+scale = Vector2(0.687728, 0.687728)
 
 [connection signal="pressed" from="HoleButton" to="." method="_on_HoleButton_pressed"]
 [connection signal="pressed" from="CommunityButton" to="." method="_on_CommunityButton_pressed"]

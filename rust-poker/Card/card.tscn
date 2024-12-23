@@ -1,4 +1,4 @@
-[gd_scene load_steps=55 format=3 uid="uid://dtki1dwyh8v2p"]
+[gd_scene load_steps=56 format=3 uid="uid://dtki1dwyh8v2p"]
 
 [ext_resource type="Texture2D" uid="uid://b56mgpak4xr7k" path="res://Graphics/Cards/PNG/black/Clovers_2_black.png" id="1_g10f5"]
 [ext_resource type="Script" path="res://Card/card.gd" id="1_r5w46"]
@@ -53,6 +53,7 @@
 [ext_resource type="Texture2D" uid="uid://crb34rmscibqj" path="res://Graphics/Cards/PNG/black/Tiles_Jack_black.png" id="51_buaam"]
 [ext_resource type="Texture2D" uid="uid://bh6x2rbv6ip0" path="res://Graphics/Cards/PNG/black/Tiles_King_black.png" id="52_g7h12"]
 [ext_resource type="Texture2D" uid="uid://c2h3mfiv47y6d" path="res://Graphics/Cards/PNG/black/Tiles_Queen_black.png" id="53_kfcjc"]
+[ext_resource type="Texture2D" uid="uid://bh87xlo7vvugt" path="res://Graphics/Cards/PNG/black/back.png" id="54_hb7m7"]
 
 [sub_resource type="SpriteFrames" id="SpriteFrames_ggc54"]
 animations = [{
@@ -212,6 +213,9 @@ animations = [{
 }, {
 "duration": 1.0,
 "texture": ExtResource("50_uj0nu")
+}, {
+"duration": 1.0,
+"texture": ExtResource("54_hb7m7")
 }],
 "loop": true,
 "name": &"default",

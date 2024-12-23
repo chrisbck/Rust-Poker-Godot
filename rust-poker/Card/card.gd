@@ -3,6 +3,8 @@ extends Node2D
 enum CardSuit {CLUBS = 0, HEARTS = 1, SPADES = 2, DIAMONDS = 3}
 enum CardRank {TWO = 0, THREE = 1, FOUR = 2, FIVE = 3, SIX = 4, SEVEN = 5, EIGHT = 6, NINE = 7, TEN = 8, JACK = 9, QUEEN = 10, KING = 11, ACE = 12}
 
+const BACK: int = 52
+
 const RANK_MAP = {
 	"Two": CardRank.TWO,
 	"Three": CardRank.THREE,
@@ -32,7 +34,7 @@ const NUM_RANKS = 13
 
 # Called when the node enters the scene tree for the first time.
 func _ready():
-	pass # Replace with function body.
+	show_back()
 
 
 func calculate_sprite_frame(rank: int, suit: int) -> int:
@@ -47,10 +49,13 @@ func set_card_from_json(card_data: Dictionary):
 		var frame_index = calculate_sprite_frame(rank, suit)
 		animated_sprite.frame = frame_index
 	else:
-		print("Invalid card data:", card_data)
+		animated_sprite.frame = BACK
 
 func set_rank(rank: String) -> void:
 	pass
 	
 func set_suit(suit: String) -> void:
 	pass
+
+func show_back() -> void:
+	animated_sprite.frame = BACK
