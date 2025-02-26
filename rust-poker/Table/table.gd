@@ -2,16 +2,16 @@ extends Node
 
 @onready var http_request = $HTTPRequest
 @onready var community_cards = $CommunityCards  # Container holding community Card nodes
-@onready var hole_cards = $HoleCards           # Container holding hole Card nodes
 @onready var evaluation_label = $Diagnostics/EvaluationLabel
+@onready var players = $Players  # Container holding all player nodes
 
 # Called when the node enters the scene tree for the first time
 func _ready():
 	evaluation_label.text = "Ready to Play!"
 
-# Sends a request to deal hole cards
+# Sends a request to deal hole cards for all players
 func _on_HoleButton_pressed():
-	print("Requesting hole cards...")
+	print("Requesting hole cards for all players...")
 	var error = http_request.request("http://127.0.0.1:3030/deal_hole")
 	if error != OK:
 		print("HTTPRequest error: ", error)
@@ -44,28 +44,52 @@ func _on_HTTPRequest_request_completed(result, response_code, headers, body):
 			var data = json_parser.get_data()
 
 			# Extract cards and request type
-			var cards = data.get("cards", [])
 			var request_type = data.get("type", "")
 
 			if request_type == "hole":
-				print("Hole cards received: ", cards)
-				update_hole_cards(cards)  # Update hole cards
+				print("Hole cards received.")
+				update_player_hole_cards(data.get("players", []))  # Update hole cards for all players
 			elif request_type == "community":
-				print("Community cards received: ", cards)
-				update_community_cards(cards)  # Update community cards
+				print("Community cards received.")
+				update_community_cards(data.get("cards", []))  # Update community cards
 			elif request_type == "evaluation":
 				var best_hand_label = data.get("rank", null)
 				var best_cards = data.get("cards", null)
 				
-				print("Evaluation received")
-				update_besthand_label(best_hand_label)
-				update_besthand_cards(best_cards)
+				print("Evaluation received.")
+				#update_besthand_label(best_hand_label)
+				#update_besthand_cards(best_cards)
+			elif request_type == "test_winners":
+				print("Test Winners received.")
+				display_winners(data.get("players", []))  # Update UI with winners
+				update_besthand_cards(data.get("players", [])[0].get("best_hand", []))
+			elif request_type == "reset":
+				reset_all_cards()
 			else:
 				print("Unknown request type: ", request_type)
 		else:
 			print("Failed to parse JSON. Error code: ", parse_result)
 	else:
 		print("Request failed with response code: ", response_code)
+
+# Updates hole cards for all players
+func update_player_hole_cards(players_data: Array):
+	var player_nodes = players.get_children()
+
+	for i in range(len(players_data)):
+		if i < len(player_nodes):
+			var player_data = players_data[i]
+			var hole_cards_data = player_data.get("hole_cards", [])
+			var player_name = player_data.get("name", "Unknown")
+			print("Updating cards for player: ", player_name)
+
+			var hole_cards = player_nodes[i].get_children()  # Get HoleCard1 and HoleCard2 nodes
+			
+			for j in range(len(hole_cards_data)):
+				if j < len(hole_cards) and hole_cards[j].has_method("set_card_from_json"):
+					hole_cards[j].set_card_from_json(hole_cards_data[j])
+				else:
+					print("Invalid card or missing method for player ", player_name, ", card ", j)
 
 # Updates the card sprites with JSON data
 func update_card_sprites(card_sprites, card_data):
@@ -79,29 +103,36 @@ func update_community_cards(card_data):
 	var card_sprites = community_cards.get_children()
 	update_card_sprites(card_sprites, card_data)
 	
-	var error = http_request.request("http://127.0.0.1:3030/evaluate")
+	var error = http_request.request("http://127.0.0.1:3030/test_winners")
 	if error != OK:
 		print("HTTPRequest error: ", error)
 		
-# Updates the hole cards
-func update_hole_cards(card_data):
-	var card_sprites = hole_cards.get_children()
-	update_card_sprites(card_sprites, card_data)
-	
-
 func update_besthand_label(best_hand):
 	evaluation_label.text = "Best hand: " + best_hand
 
 func update_besthand_cards(cards):
-	$Hand.update_hand_from_json(cards)
+	$BestHand.update_hand_from_json(cards)
 	
 func update_remaining_cards(remaining: int) -> void:
-	$Diagnostics/RemainingCards.text = "Remaing Cards: " + str(remaining)
+	$Diagnostics/RemainingCards.text = "Remaining Cards: " + str(remaining)
+
+func display_winners(winners_data: Array):
+	print(winners_data)
+	pass
 
 # Resets all card sprites to their default state
 func reset_all_cards():
-	var all_cards = community_cards.get_children() + hole_cards.get_children()
-	for card in all_cards:
-		card.show_back()
+	var all_cards = community_cards.get_children()
 	
-	$Hand.reset_hand()
+	# Add all hole cards from players
+	for player in players.get_children():
+		all_cards += player.get_children()
+
+	for card in all_cards:
+		if card.has_method("show_back"):
+			card.show_back()
+	
+	$BestHand.reset_hand()
+
+func _on_exit_button_pressed() -> void:
+	get_tree().quit()

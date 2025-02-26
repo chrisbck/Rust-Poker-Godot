@@ -1,0 +1,59 @@
+[gd_scene load_steps=5 format=3 uid="uid://ebj72a0uqdmt"]
+
+[ext_resource type="Script" path="res://Player/player.gd" id="1_5gncw"]
+[ext_resource type="Texture2D" uid="uid://4sd0h7u1e0wk" path="res://icon.svg" id="1_q6gxx"]
+[ext_resource type="PackedScene" uid="uid://dtki1dwyh8v2p" path="res://Card/card.tscn" id="2_0abyp"]
+[ext_resource type="PackedScene" uid="uid://dtnu4lelaev2" path="res://Table/Stack/stack.tscn" id="3_3mp71"]
+
+[node name="Player" type="Node2D"]
+script = ExtResource("1_5gncw")
+
+[node name="AvatarSprite" type="Sprite2D" parent="."]
+z_index = 1
+position = Vector2(-80, -88)
+texture = ExtResource("1_q6gxx")
+
+[node name="HoleCards" type="Node2D" parent="."]
+position = Vector2(0, -176)
+
+[node name="Card1" parent="HoleCards" instance=ExtResource("2_0abyp")]
+position = Vector2(-64, 0)
+
+[node name="Card2" parent="HoleCards" instance=ExtResource("2_0abyp")]
+position = Vector2(64, 0)
+
+[node name="NameLabel" type="Label" parent="."]
+offset_left = 8.0
+offset_top = -88.0
+offset_right = 55.0
+offset_bottom = -65.0
+text = "Name"
+
+[node name="StackLabel" type="Label" parent="."]
+offset_left = 8.0
+offset_top = -64.0
+offset_right = 54.0
+offset_bottom = -41.0
+text = "$1000"
+
+[node name="StatusLabel" type="Label" parent="."]
+offset_left = -104.0
+offset_top = -24.0
+offset_right = -55.0
+offset_bottom = -1.0
+text = "Status"
+
+[node name="Stack" parent="." instance=ExtResource("3_3mp71")]
+visible = false
+position = Vector2(184, -128)
+
+[node name="BetStack" parent="." instance=ExtResource("3_3mp71")]
+position = Vector2(72, -296)
+
+[node name="PuckPosition" type="Node2D" parent="."]
+position = Vector2(-152, -256)
+
+[node name="ActionTimer" type="Timer" parent="."]
+one_shot = true
+
+[connection signal="timeout" from="ActionTimer" to="." method="_on_action_timer_timeout"]
